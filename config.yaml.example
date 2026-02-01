@@ -1,0 +1,122 @@
+# AWX TUI Configuration Example
+# Copy this file to ~/.config/awx-tui/config.yaml and update with your AWX instance details
+#
+# For system-wide config: cp config.yaml.example ~/.config/awx-tui/config.yaml
+# For development: cp config.yaml.example config.yaml (in project root)
+
+# ===================================================================
+# INSTANCES
+# ===================================================================
+# Define one or more AWX instances to connect to
+# Instance names must be alphanumeric with hyphens/underscores only
+# Reserved names: mock-prod, mock-dev, mock-staging, @env-vars, @cli-args
+
+instances:
+
+  # Example: Token-based authentication (recommended)
+  dev2:
+    url: https://awx.dev2.example.com      # Required: Full URL including https://
+    auth:
+      method: token                         # Required: "token" or "password"
+      username: admin                       # Required: AWX username
+      token: your-token-here                # Required for method: token
+    verify_ssl: true                        # Optional: Verify SSL certs (default: true)
+    dashboard: classic                      # Optional: Dashboard layout ('classic' or 'sleek') (default: classic)
+    description: "Development AWX 2"        # Optional: Human-readable description
+
+  # Example: Password-based authentication
+  dev1:
+    url: https://awx.dev1.example.com
+    auth:
+      method: password
+      username: admin
+      password: your-password-here          # Required for method: password
+    verify_ssl: false                       # Disable for self-signed certs
+    dashboard: sleek                        # Use sleek dashboard for dev instance
+    description: "Development AWX 1"
+
+  # Example: Environment variable substitution
+  staging:
+    url: ${AWX_STAGING_HOST}                # Use ${VAR_NAME} for env var substitution
+    auth:
+      method: token
+      username: ${AWX_STAGING_USER}
+      token: ${AWX_STAGING_TOKEN}
+    verify_ssl: true
+    dashboard: classic                      # Optional: Dashboard layout (default: classic)
+    description: "Staging AWX"
+
+  # Example: Custom API base path (rarely needed)
+  # custom-awx:
+  #   url: https://awx.custom.example.com
+  #   auth:
+  #     method: token
+  #     username: admin
+  #     token: your-token-here
+  #   verify_ssl: true
+  #   api_base_path: /api/v2                # Optional: Override API base path (default: /api/v2)
+  #   description: "Custom AWX"
+
+# ===================================================================
+# PREFERENCES
+# ===================================================================
+# Global application preferences (all optional with defaults shown)
+
+preferences:
+
+  # --- Dashboard Refresh Settings ---
+  dashboard_auto_refresh: true                    # Enable/disable auto-refresh (default: true)
+  dashboard_refresh_interval: 5                   # General dashboard refresh interval in seconds (default: 5)
+  dashboard_refresh_timeout: 30                   # Max wait time for refresh before timeout (default: 30)
+
+  # Per-section refresh intervals (seconds)
+  dashboard_refresh_interval_running: 1           # Running jobs table (default: 1)
+  dashboard_refresh_interval_recent: 1            # Recent jobs table (default: 1)
+  dashboard_refresh_interval_capacity: 1          # Capacity metrics (default: 1)
+  dashboard_refresh_interval_graphs: 1            # Dashboard graphs (default: 1)
+  dashboard_refresh_interval_stats: 1             # Statistics panel (default: 1)
+
+  # --- Job Detail Settings ---
+  job_detail_refresh_interval: 1                  # Job detail modal refresh interval (default: 1)
+  job_detail_auto_follow: true                    # Auto-scroll to bottom of logs (default: true)
+
+  # --- Instance Management Settings ---
+  instance_selection_refresh_interval: 5          # Instance health check interval (default: 5)
+  show_instance_in_header: true                   # Show active instance in header (default: true)
+
+  # --- Development/Testing ---
+  mock_mode: false                                # Enable mock mode (default: false)
+                                                  # Note: --mock flag overrides this setting
+
+# ===================================================================
+# NOTES
+# ===================================================================
+#
+# Environment Variables:
+# - Generic fallback: AWX_HOST, AWX_TOKEN, AWX_USER, AWX_PASSWORD, AWX_VERIFY_SSL, AWX_DASHBOARD
+# - Instance-specific: AWX_{INSTANCE_NAME}_HOST, AWX_{INSTANCE_NAME}_TOKEN, AWX_{INSTANCE_NAME}_DASHBOARD, etc.
+# - CLI arguments create @cli-args instance (--host, --token, --dashboard, etc.)
+# - Generic env vars create @env-vars instance
+#
+# Precedence (highest to lowest):
+# 1. Command-line arguments (creates @cli-args instance)
+# 2. Instance-specific environment variables (AWX_{NAME}_TOKEN, AWX_{NAME}_DASHBOARD)
+# 3. Generic environment variables (AWX_TOKEN, AWX_DASHBOARD)
+# 4. Config file values
+#
+# Example:
+#   export AWX_TOKEN=fallback-token              # Used by all instances
+#   export AWX_DEV2_TOKEN=dev2-specific          # Overrides for dev2 only
+#   export AWX_DASHBOARD=sleek                   # Default dashboard for all instances
+#   export AWX_DEV1_DASHBOARD=classic            # Override dev1 to use classic
+#
+# Reserved Instance Names:
+# - mock-prod, mock-dev, mock-staging (mock mode instances)
+# - @env-vars (created from AWX_* environment variables)
+# - @cli-args (created from command-line arguments)
+#
+# Instance Name Rules:
+# - Max 64 characters
+# - Alphanumeric, hyphens, and underscores only
+# - Cannot start with @ (reserved for special instances)
+#

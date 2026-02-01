@@ -1,0 +1,120 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "awx-tui"
+version = "0.1.0-beta"
+description = "Terminal User Interface for AWX - Rage Tater Edition"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Andrew Potozniak", email = "potozniak@redhat.com"},
+    {name = "John Mitchell", email = "jmitchel@redhat.com"},
+    {name = "John Barker", email = "jobarker@redhat.com"}
+]
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Systems Administration",
+    "Topic :: Utilities",
+]
+keywords = ["awx", "ansible", "tui", "terminal", "automation"]
+
+dependencies = [
+    "textual>=0.40.0",
+    "httpx>=0.25.0",
+    "pyyaml>=6.0",
+    "rich>=13.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/ansible-community/awx-tui"
+Repository = "https://github.com/ansible-community/awx-tui"
+Issues = "https://github.com/ansible-community/awx-tui/issues"
+
+[project.scripts]
+awx-tui = "awx_tui.main:main"
+
+[tool.setuptools]
+packages = ["awx_tui", "awx_tui.screens", "awx_tui.modals", "awx_tui.dashboards", "awx_tui.utils"]
+
+[tool.setuptools.package-data]
+awx_tui = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+addopts = [
+    "--verbose",
+    "--strict-markers",
+    "--strict-config",
+]
+markers = [
+    "unit: Unit tests (fast, no external dependencies)",
+    "integration: Integration tests (may require AWX instance)",
+    "slow: Slow tests (mark for conditional skip)",
+    "asyncio: Async tests",
+]
+
+[tool.ruff]
+# Target Python 3.8+
+target-version = "py38"
+line-length = 120
+
+# Exclude common directories
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    "__pycache__",
+    "build",
+    "dist",
+    "*.egg-info",
+]
+
+[tool.ruff.lint]
+# Enable pycodestyle (E), Pyflakes (F), and isort (I)
+select = ["E", "F", "I", "W"]
+
+# Ignore specific rules
+ignore = [
+    "E501",  # Line too long (handled by black/formatter)
+    "E722",  # Bare except (sometimes needed in TUI error handling)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["awx_tui"]
+
+[tool.black]
+line-length = 120
+target-version = ["py38", "py39", "py310", "py311", "py312"]
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  | \.git
+  | \.venv
+  | venv
+  | build
+  | dist
+)/
+'''

@@ -1,0 +1,74 @@
+# AWX TUI Development Configuration
+# This file is used by the Makefile and awx-env.sh for local development
+#
+# Copy to config.yaml: cp config.yaml.development config.yaml
+# Then update with your local AWX credentials
+
+# ===================================================================
+# INSTANCES
+# ===================================================================
+
+instances:
+  local-awx:
+    url: https://localhost:8043                 # Local AWX instance
+    auth:
+      method: password                          # or 'token'
+      username: admin
+      password: your-password-here              # Update with your local AWX password
+      # token: your-token-here                  # Use instead of password if method: token
+    verify_ssl: false                           # Self-signed cert for local dev
+    dashboard: sleek                            # Dashboard layout ('classic' or 'sleek') (default: classic)
+    description: "Local AWX development instance"
+
+# ===================================================================
+# PREFERENCES
+# ===================================================================
+# Development-focused settings (faster refresh for testing)
+
+preferences:
+  # Faster refresh for development
+  dashboard_auto_refresh: true
+  dashboard_refresh_interval_running: 1         # Fast refresh for running jobs
+  dashboard_refresh_interval_recent: 1          # Fast refresh for recent jobs
+  dashboard_refresh_interval_capacity: 1
+  dashboard_refresh_interval_graphs: 1
+  dashboard_refresh_interval_stats: 1
+
+  # Job detail settings
+  job_detail_refresh_interval: 1                # Fast log updates
+  job_detail_auto_follow: true                  # Auto-scroll logs
+
+  # Instance management
+  instance_selection_refresh_interval: 5
+  show_instance_in_header: true
+
+  # Mock mode (overridden by --mock flag)
+  mock_mode: false
+
+# ===================================================================
+# DEVELOPMENT NOTES
+# ===================================================================
+#
+# Using with make targets:
+#   make setup      - Creates .venv, installs dependencies, copies this file to config.yaml
+#   make run        - Runs awx-tui with config from awx-env.sh
+#   make run-mock   - Runs awx-tui in mock mode (ignores this config)
+#   make dev        - Runs in tmux with hot reload (uses this config)
+#   make dev-mock   - Runs in tmux with hot reload in mock mode
+#
+# awx-env.sh behavior:
+#   Reads this config.yaml and exports as environment variables:
+#   - AWX_HOST from instances.local-awx.url
+#   - AWX_USER from instances.local-awx.auth.username
+#   - AWX_PASSWORD or AWX_TOKEN depending on auth method
+#   - AWX_VERIFY_SSL from instances.local-awx.verify_ssl
+#   - AWX_DASHBOARD from instances.local-awx.dashboard
+#
+# Environment variable override:
+#   You can override specific values without editing this file:
+#     export AWX_PASSWORD=different-password
+#     export AWX_DASHBOARD=sleek
+#     make run
+#
+# For comprehensive config options, see config.yaml.example
+#

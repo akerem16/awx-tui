@@ -1,0 +1,44 @@
+/* AWX TUI - Global Styles */
+
+Screen {
+    background: $surface;
+}
+
+Header {
+    background: $primary;
+    color: $text;
+}
+
+Footer {
+    background: $panel;
+}
+
+/* Status colors for jobs */
+.status-successful {
+    color: $success;
+}
+
+.status-failed {
+    color: $error;
+}
+
+.status-running {
+    color: $warning;
+}
+
+.status-pending {
+    color: $text-muted;
+}
+
+.status-canceled {
+    color: $text-disabled;
+}
+
+/* Instance indicators */
+.instance-mock {
+    color: $accent;
+}
+
+.instance-env {
+    color: $secondary;
+}

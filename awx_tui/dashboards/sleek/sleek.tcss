@@ -1,0 +1,184 @@
+/* =============================================================================
+   Sleek Dashboard - CSS Layout
+   =============================================================================
+   Organization:
+   1. Global styles
+   2. Top status bar
+   3. Main layout structure (columns)
+   4. Panel heights
+   5. Panel internal widths
+   6. Internal dividers and spacing
+   7. Tables
+   8. Loaflet panel specifics
+   ============================================================================= */
+
+
+/* =============================================================================
+   1. GLOBAL STYLES
+   ============================================================================= */
+
+Screen {
+    background: $surface;
+}
+
+BorderPanel {
+    width: 100%;
+}
+
+DataTable {
+    height: auto;
+    padding: 0 1;
+}
+
+
+/* =============================================================================
+   2. TOP STATUS BAR
+   ============================================================================= */
+
+#sleek-top-panel {
+    dock: top;
+    height: 3;
+    padding: 0;
+    border: none;
+}
+
+
+/* =============================================================================
+   3. MAIN LAYOUT STRUCTURE
+   =============================================================================
+   Layout:
+   ┌─────────────────────────────────────────────────┬──────────────┐
+   │ content-column (1fr)                            │ stats-column │
+   │ ┌─────────────────────┬───────────────────────┐ │    (30)      │
+   │ │ health-graphs (92)  │ instances-column (1fr)│ │              │
+   │ └─────────────────────┴───────────────────────┘ │              │
+   │ ┌─────────────────────────────────────────────┐ │              │
+   │ │ jobs-panel (1fr height)                     │ │              │
+   │ └─────────────────────────────────────────────┘ │              │
+   └─────────────────────────────────────────────────┴──────────────┘
+   ============================================================================= */
+
+/* Main columns */
+.sleek-dashboard #content-column {
+    width: 1fr;
+}
+
+.sleek-dashboard #stats-column {
+    width: 29;
+}
+
+/* Top row sizing */
+.sleek-dashboard #top-row {
+    height: auto;
+}
+
+.sleek-dashboard #health-graphs-column {
+    width: 93;
+    height: auto;
+}
+
+.sleek-dashboard #instances-column {
+    width: 1fr;
+    height: auto;
+}
+
+
+/* =============================================================================
+   4. PANEL HEIGHTS
+   =============================================================================
+   Fixed heights for top panels, 1fr for responsive panels.
+   ============================================================================= */
+
+/* Fixed height panels */
+#health-panel     { height: 7; }
+#graphs-panel     { height: 9; }
+#instances-panel  { height: 7; }
+#groups-panel     { height: 9; }
+#stats-panel      { height: 16; }
+
+/* Responsive panels (fill remaining space) */
+#jobs-panel       { height: 1fr; }
+#mini-loaf-panel  { height: 1fr; }
+
+
+/* =============================================================================
+   5. PANEL INTERNAL WIDTHS
+   =============================================================================
+   Fixed widths for internal sections within panels.
+   ============================================================================= */
+
+/* HEALTH panel sections (total: 93) */
+#health-system-status  { width: 24; }
+#health-capacity       { width: 21; }
+#health-failures       { width: 48; }
+
+/* JOB STATUS panel sections (total: 93) */
+#jobs-graph-table      { width: 45; }
+#jobs-graph-visual     { width: 48; }
+
+
+/* =============================================================================
+   6. INTERNAL DIVIDERS AND SPACING
+   =============================================================================
+   Vertical dividers between sections, padding for content.
+   ============================================================================= */
+
+/* Health panel internal dividers */
+#health-system-status,
+#health-capacity {
+    border-right: solid $primary;
+    padding: 0 1;
+    height: 6;
+}
+
+#health-failures {
+    padding: 0 1;
+    height: 6;
+}
+
+/* Job status panel internal divider */
+#jobs-graph-table {
+    border-right: solid $primary;
+    padding: 0 1;
+}
+
+#jobs-graph-visual {
+    padding: 0 1;
+}
+
+
+/* =============================================================================
+   7. TABLES
+   ============================================================================= */
+
+#jobs-table {
+    height: 100%;
+}
+
+/* Alternating row colors for better readability */
+DataTable > .datatable--odd-row {
+    background: $surface;
+}
+
+DataTable > .datatable--even-row {
+    background: $surface-darken-1;
+}
+
+
+/* =============================================================================
+   8. LOAFLET PANEL SPECIFICS
+   ============================================================================= */
+
+#mini-loaf-scroll {
+    height: 1fr;
+}
+
+#mini-loaf-content {
+    margin: 0;
+}
+
+#mini-loaf-footer {
+    height: 2;
+    text-align: center;
+    border-top: solid $primary;
+}
